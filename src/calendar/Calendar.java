@@ -6,25 +6,18 @@ public class Calendar {
 
 	public static void main(String[] args) {
 
-		int a, b;
-		//new Scanner(File)
-		Scanner scanner = new Scanner(System.in);//System.in == keyboard
+		//숫자를 입력받아 해당하는 달의 최대 일수를 출력하는 프로그램
+		Scanner scanner = new Scanner(System.in);
 
-		String s1, s2;
+		System.out.println("달을 입력하세요");
 
-		System.out.println("두 수를 입력해 주세요.");
+		int month = scanner.nextInt();
+		int[] maxDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-		s1 = scanner.next();
-		s2 = scanner.next();
+		System.out.printf("%d월은 %d일까지 있습니다/n", month, maxDays[month - 1]);
 
-		a = Integer.parseInt(s1);
-		b = Integer.parseInt(s2);
-
-		System.out.printf("%d와 %d의 합은 %d입니다", a, b, a+b);
-
-		//스캐너 사용 후 종료 필수 Resource leak: 'scanner' is never closed
 		scanner.close();
-		
+
 	}//main
 
-}//Calender
+}//Calendar
