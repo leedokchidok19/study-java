@@ -5,7 +5,23 @@ import java.util.Scanner;
 public class Prompt {
 
 
-	public final static String PROMPT = "calendar> ";
+	/*
+	 * @param week 요일명
+	 * @return 0 ~ 6 (0 = Sunday, 6 = Saturday)
+	 * */
+	public int parseDay(String week) {
+		switch (week) {
+		case "su": return 0;
+		case "mo": return 1;
+		case "tu": return 2;
+		case "we": return 3;
+		case "th": return 4;
+		case "fr": return 5;
+		case "sa": return 6;
+		default: return 0;
+			//throw new IllegalArgumentException("Unexpected value: " + week);
+		}
+	}
 
 	public void runPrompt() {
 
@@ -17,24 +33,32 @@ public class Prompt {
 
 		int month = 1;
 		int year = -1;
+		int weekday = 0;
 
 		while(true) {
 
-			System.out.println("년도를 입력하세요");
+			System.out.println("년도를 입력하세요 (exit: -1)");
 			System.out.print("YEAR> ");
 			year = scanner.nextInt();
+
+			//종료
+			if(year == -1) break;
+
 			System.out.println("달을 입력하세요");
 			System.out.print("MONTH> ");
 			month = scanner.nextInt();
-					
-			if(month < 1) break;
-					
-			if(month > 12) {
+
+			//잘못된 입력
+			if(month > 12 || month < 1) {
 				System.out.println("1~12월 사이로 입력해 주세요");
 				continue;
 			}
 
-			cal.printCalendar(year, month);
+			System.out.println("첫째 날의 요일을 입력하세요(su, mo, tu, we, th, fr, sa).");
+			String str_weekday = scanner.next();
+			weekday = parseDay(str_weekday);
+
+			cal.printCalendar(year, month, weekday);
 
 		}//while
 
