@@ -1,7 +1,5 @@
 package calendar;
 
-import java.util.Scanner;
-
 public class Calendar {
 
 	private static final int[] MAX_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -22,21 +20,16 @@ public class Calendar {
 			return MAX_DAYS[month - 1];
 	}//maxDaysOfMonth
 
-	/*
-	 * - 월을 입력하면 해당월의 달력을 출력한다.
-	 * - 달력은 모양은 1단계에서 작성한 모양으로 만든다.
-	 * - 1일은 일요일로 정해도 무관하다.
-	 * - -1을 입력받기 전까지 반복 입력받는다.
-	 * - 프롬프트를 출력한다.
-	 * */
 
-	public void printCalendar(int year, int month, int weekday) {
-System.out.println(weekday);
+	public void printCalendar(int year, int month) {
+
 		// %4d 4칸, %3d 3칸 의미
-		System.out.printf("  <<%4d년%3d월>>\n", year, month);
+		System.out.printf("  <<%d년 %d월>>\n", year, month);
 		System.out.println(" SU MO TU WE TH FR SA");
 		System.out.println("---------------------");
 
+		//get weekday automatically - 젤러 공식, 둠스데이 검색
+		int weekday = getWeekDay(year, month, 1);
 		//print blank space
 		for(int i =0; i < weekday; i++) {
 			System.out.printf("   ");
@@ -73,5 +66,45 @@ System.out.println(weekday);
 		System.out.println("\n");
 
 	}//printSampleCalendar
+
+	private int getWeekDay(int year, int month, int day) {
+
+		int standardYear = 1970;
+		final int STANDAR_WEEKDAY = 3; //1970/Jan/1st Thursday 1970년 1월 1일 목요일
+
+		int count = 0;
+
+		for(int i = standardYear; i <  year; i++) {
+
+			int delta = isLeapYear(i) ? 366 : 365;
+			count += delta;
+
+		}
+
+		for(int i = 1; i <  month; i++) {
+			
+			int delta = getMaxDaysOfMonth(year, i);
+			count += delta;
+			
+		}
+
+		count += day;
+
+		int weekday = (count+STANDAR_WEEKDAY) % 7;
+		return weekday;
+	}
+
+	//simple test code here
+	public static void main(String[] args) {
+
+		Calendar cal = new Calendar();
+
+		System.out.println(cal.getWeekDay(1970, 1, 1) == 3);
+		System.out.println(cal.getWeekDay(1971, 1, 1) == 4);
+		System.out.println(cal.getWeekDay(1972, 1, 1) == 5);
+		System.out.println(cal.getWeekDay(1973, 1, 1) == 0);
+		System.out.println(cal.getWeekDay(1974, 1, 1) == 1);
+		
+	}//main
 
 }//Calendar
