@@ -4,6 +4,15 @@ import java.util.Scanner;
 
 public class Prompt {
 
+	public void printMenu() {
+		System.out.println("+---------------+");
+		System.out.println("│ 1. 일정 등록		│");
+		System.out.println("│ 2. 일정 검색		│");
+		System.out.println("│ 3. 달력 보기		│");
+		System.out.println("│ h. 도움말		│");
+		System.out.println("│ q. 종료			│");
+		System.out.println("+---------------+");
+	}
 
 	/*
 	 * @param week 요일명
@@ -20,48 +29,65 @@ public class Prompt {
 		case "sa": return 6;
 		default: return 0;
 			//throw new IllegalArgumentException("Unexpected value: " + week);
-		}
-	}
+		}//switch
+	}//parseDay
 
 	public void runPrompt() {
 
+		printMenu();
 		//숫자를 입력받아 해당하는 달의 최대 일수를 출력하는 프로그램
 		Scanner scanner = new Scanner(System.in);
 		Calendar cal = new Calendar();
 
-		System.out.println("반복횟수를 입력하세요");
-
-		int month = 1;
-		int year = -1;
-
 		while(true) {
 
-			System.out.println("년도를 입력하세요 (exit: -1)");
-			System.out.print("YEAR> ");
-			year = scanner.nextInt();
-
-			//종료
-			if(year == -1) break;
-
-			System.out.println("달을 입력하세요");
-			System.out.print("MONTH> ");
-			month = scanner.nextInt();
-
-			//잘못된 입력
-			if(month > 12 || month < 1) {
-				System.out.println("1~12월 사이로 입력해 주세요");
-				continue;
-			}
-
-			cal.printCalendar(year, month);
+			System.out.println("명령(1, 2, 3, h, q)");
+			String cmd = scanner.next();
+			if (cmd.equals("1"))		cmdRegister();
+			else if (cmd.equals("2"))	cmdSearch();
+			else if (cmd.equals("3"))	cmdCal(scanner, cal);
+			else if (cmd.equals("h"))	printMenu();
+			else if (cmd.equals("q"))	break;
 
 		}//while
 
 		System.out.println("종료되었습니다");
-
 		scanner.close();
 
 	}//runPrompt
+
+	private void cmdCal(Scanner s, Calendar c) {
+
+		int month = 1;
+		int year = -1;
+
+		System.out.println("년도를 입력하세요.");
+		System.out.print("YEAR> ");
+		year = s.nextInt();
+
+		System.out.println("달을 입력하세요");
+		System.out.print("MONTH> ");
+		month = s.nextInt();
+
+		//잘못된 입력
+		if(month > 12 || month < 1) {
+			System.out.println("1~12월 사이로 입력해 주세요");
+			return;
+		}
+
+		c.printCalendar(year, month);
+		
+	}//cmdCal
+
+	private void cmdSearch() {
+		// TODO Auto-generated method stub
+		
+	}//cmdSearch
+
+	private void cmdRegister() {
+		// TODO Auto-generated method stub
+		
+	}//cmdRegister
 
 	public static void main(String[] args) {
 
