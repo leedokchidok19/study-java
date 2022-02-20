@@ -39,15 +39,29 @@ public class Prompt {
 		Scanner scanner = new Scanner(System.in);
 		Calendar cal = new Calendar();
 
-		while(true) {
+		boolean isLoop = true;
+		while(isLoop) {
 
 			System.out.println("명령(1, 2, 3, h, q)");
 			String cmd = scanner.next();
-			if (cmd.equals("1"))		cmdRegister();
-			else if (cmd.equals("2"))	cmdSearch();
-			else if (cmd.equals("3"))	cmdCal(scanner, cal);
-			else if (cmd.equals("h"))	printMenu();
-			else if (cmd.equals("q"))	break;
+
+			switch (cmd) {
+			case "1":
+				cmdRegister();
+				break;
+			case "2":
+				cmdSearch();
+				break;
+			case "3":
+				cmdCal(scanner, cal);
+				break;
+			case "h":
+				printMenu();
+				break;
+			case "q":
+				isLoop = false;
+				break;
+			}//switch
 
 		}//while
 
