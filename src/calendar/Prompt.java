@@ -1,5 +1,6 @@
 package calendar;
 
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Prompt {
@@ -32,7 +33,7 @@ public class Prompt {
 		}//switch
 	}//parseDay
 
-	public void runPrompt() {
+	public void runPrompt() throws ParseException {
 
 		printMenu();
 		//숫자를 입력받아 해당하는 달의 최대 일수를 출력하는 프로그램
@@ -47,10 +48,10 @@ public class Prompt {
 
 			switch (cmd) {
 			case "1":
-				cmdRegister();
+				cmdRegister(scanner, cal);
 				break;
 			case "2":
-				cmdSearch();
+				cmdSearch(scanner, cal);
 				break;
 			case "3":
 				cmdCal(scanner, cal);
@@ -93,17 +94,50 @@ public class Prompt {
 		
 	}//cmdCal
 
-	private void cmdSearch() {
-		// TODO Auto-generated method stub
-		
+	private void cmdSearch(Scanner s, Calendar c) {
+
+		System.out.println("[일정 검색]");
+		System.out.println("날짜를 입력해주세여 (yyyy-MM-dd)");
+
+		String date = s.next();
+		PlanItem plan = c.searchPlan(date);
+
+		if(plan != null) System.out.println(plan.detail);
+		else System.out.println("일정이 없습니다.");
+
 	}//cmdSearch
 
-	private void cmdRegister() {
-		// TODO Auto-generated method stub
+	private void cmdRegister(Scanner s, Calendar c) throws ParseException {
+
+		System.out.println("[새 일정 등록]");
+		System.out.println("날짜를 입력해주세여 (yyyy-MM-dd)");
+
+		String date = s.next();
+		String text = "";
+		System.out.println("일정을 입력해 주세요(끝문자=;)");
+		String word;
+		while(!(word = s.next()).endsWith(";")) {
+			text+= word + " ";
+		}
+
+		word = word.replace(";", "");
+		text += word;
+
+/*	입력이 제대로 안되는 문제 발생
+ 	한영 전환 등
+		System.out.println("일정을 입력해 주세요(문장의 끝에 ;을 입력해 주세요)");
+
+		while(true) {
+			String word = s.next();
+			text += word + " ";
+			if(word.endsWith(";")) break;
+		}
+*/
+		c.registerPlan(date, text);
 		
 	}//cmdRegister
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 
 		// 셀 실행
 		Prompt p = new Prompt();
