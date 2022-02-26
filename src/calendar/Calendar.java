@@ -1,20 +1,57 @@
 package calendar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Calendar {
 
 	private static final int[] MAX_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	private static final int[] LEAP_MAX_DAYS = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	private static final String SAVE_FILE = "calendar.dat";
 
 	private HashMap<Date, PlanItem> planMap;
 
 	//생성자로 planMap 초기화
 	public Calendar() {
+
 		planMap = new HashMap<Date, PlanItem>();
-	}
+		//데이터 불러오기
+		File f = new File(SAVE_FILE);
+
+		//파일이 없는 경우 불러오지 않는다
+		if (!f.exists()) {
+			System.err.println("no save file");
+			return;
+		}
+
+		//파일이 있을 경우 불러오기
+		try {
+
+			Scanner s = new Scanner(f);
+			while(s.hasNext()) {
+				String line = s.nextLine();
+				String[] words = line.split(",");
+				String date = words[0];
+				String detail = words[1].replaceAll("\"", "");
+				//System.out.println("date:"+date+"detail:"+detail);
+
+				PlanItem p = new PlanItem(date, detail);
+				planMap.put(p.getDate(), p);
+
+			}//while
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}//Calendar
 
 	/*
 	 * @param date ex: "2017-06-20"
@@ -24,6 +61,21 @@ public class Calendar {
 
 		PlanItem p = new PlanItem(strDate, plan);
 		planMap.put(p.getDate(), p);
+
+		File f = new File(SAVE_FILE);
+		String item = p.saveString();
+
+		try {
+			//f: 입력 정보, true: append 속성
+			FileWriter fw = new FileWriter(f, true);//true 생략할 경우 덮어씌우기
+			//파일 불러오는 형식 지정 - CSV: ","로 구분되는 형식
+			fw.write(item);
+			fw.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}//registerPlan
 
