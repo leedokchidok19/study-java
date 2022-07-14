@@ -1,4 +1,4 @@
-package calendar;
+package leedokchidok.calendar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

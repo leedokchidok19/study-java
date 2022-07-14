@@ -1,4 +1,4 @@
-package calendar;
+package leedokchidok.calendar;
 
 import java.io.File;
 import java.io.FileNotFoundException;
